@@ -44,12 +44,12 @@ class PointConvModel(keras.Model):
 
         self.dense1 = keras.layers.Dense(128, activation=self.activation)
         self.dropout1 = keras.layers.Dropout(0.4)
-        self.dense2 = keras.layers.Dense(self.num_classes, activation=tf.nn.softmax)
+        self.dense2 = keras.layers.Dense(self.num_classes, activation=self.activation)
 
     def forward_pass(self, input, training):
 
-        l0_xyz = input
-        l0_points = None
+        l0_xyz = input[:,:,:3]
+        l0_points = input[:,:,3:]
 
         l1_xyz, l1_points = self.sa_layer1(l0_xyz, l0_points, training=training)
         l2_xyz, l2_points = self.sa_layer2(l1_xyz, l1_points, training=training)
